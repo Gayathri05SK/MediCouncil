@@ -1,9 +1,14 @@
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(__file__).parent.parent))
+
 import pandas as pd
 import numpy as np
-from pathlib import Path
 from sklearn.model_selection import train_test_split
-from config.settings import DATADIR
+from config.settings import DATA_DIR
 from src.utils.logger import logger
+
+DATADIR = DATA_DIR
 
 def load_raw_data():
     """Load raw dataset files"""
@@ -64,7 +69,6 @@ def create_sample_data():
 def preprocess_data(df):
     """Clean and preprocess data"""
     logger.info("Preprocessing data...")
-    df = df.drop_duplicates()
     df.loc[:, 'chronic_conditions'] = df['chronic_conditions'].fillna('')
     df.loc[:, 'red_flags'] = df['red_flags'].fillna('')
     df.loc[:, 'symptoms_text'] = df['symptoms_text'].str.lower()
@@ -77,14 +81,14 @@ def split_data(df, test_size=0.2, val_size=0.1):
     
     # First split: train+val vs test
     train_val, test = train_test_split(
-        df, test_size=test_size, random_state=42, stratify=df['triagelabel']
+        df, test_size=test_size, random_state=42, stratify=df['triage_label']
     )
     
     # Second split: train vs val
     val_size_adjusted = val_size / (1 - test_size)
     train, val = train_test_split(
         train_val, test_size=val_size_adjusted, random_state=42, 
-        stratify=train_val['triagelabel']
+        stratify=train_val['triage_label']
     )
     
     logger.info(f"Train: {len(train)}, Val: {len(val)}, Test: {len(test)}")

@@ -1,3 +1,7 @@
+# Virtual environments
+medicouncil_env/
+medicouncil_env
+
 # Python
 __pycache__/
 *.py[cod]
@@ -27,13 +31,7 @@ wheels/
 .env
 .env.local
 
-# Models
-models/*.pkl
-models/ml_baselines/*.pkl
-
-# Data
-data/raw/*.csv
-data/processed/*.csv
+# Data (exclude large/sensitive files but keep what's needed for deployment)
 data/synthetic/*.csv
 
 # Logs
