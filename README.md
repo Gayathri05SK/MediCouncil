@@ -1,4 +1,4 @@
-# 🏥 MediCouncil: Multi-Agent LLM Council for Symptom Triage
+# MediCouncil: Multi-Agent LLM Council for Symptom Triage
 
 ## Overview
 
@@ -14,4 +14,3 @@ MediCouncil is an AI-powered decision support system that performs symptom triag
 - **REST API**: FastAPI backend for integration with other systems
 
 ## Architecture
-
