@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MediCouncil - AI Symptom Triage</title>
+    <link rel="stylesheet" href="/static/css/style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🏥 MediCouncil</h1>
+            <p class="subtitle">Multi-Agent LLM Council for Symptom Triage</p>
+        </header>
+
+        <div class="disclaimer-box">
+            <strong>⚠️ Important Disclaimer:</strong> This is a decision support tool only, not a replacement for professional medical advice. 
+            In case of emergency, call your local emergency number immediately (e.g., 911, 108).
+        </div>
+
+        <div class="main-content">
+            <div class="input-section">
+                <h2>Describe Your Symptoms</h2>
+                
+                <form id="triageForm">
+                    <div class="form-group">
+                        <label for="symptoms">Symptoms Description *</label>
+                        <textarea 
+                            id="symptoms" 
+                            name="symptoms" 
+                            rows="6" 
+                            required
+                            placeholder="Describe your symptoms in detail (e.g., 'severe chest pain radiating to left arm with sweating and nausea')..."
+                        ></textarea>
+                        <small>Minimum 3 characters, maximum 2000 characters</small>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="age">Age</label>
+                            <input type="number" id="age" name="age" min="0" max="120" placeholder="Enter age">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="sex">Sex</label>
+                            <select id="sex" name="sex">
+                                <option value="">Select...</option>
+                                <option value="M">Male</option>
+                                <option value="F">Female</option>
+                                <option value="U">Prefer not to say</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="chronic">Chronic Conditions</label>
+                        <input 
+                            type="text" 
+                            id="chronic" 
+                            name="chronic" 
+                            placeholder="e.g., diabetes, hypertension (comma-separated)"
+                        >
+                        <small>Optional: List any chronic medical conditions</small>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Red Flag Symptoms (check if present):</label>
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="red_flags" value="chest_pain"> Chest Pain</label>
+                            <label><input type="checkbox" name="red_flags" value="difficulty_breathing"> Difficulty Breathing</label>
+                            <label><input type="checkbox" name="red_flags" value="severe_bleeding"> Severe Bleeding</label>
+                            <label><input type="checkbox" name="red_flags" value="loss_consciousness"> Loss of Consciousness</label>
+                            <label><input type="checkbox" name="red_flags" value="stroke_signs"> Stroke Signs (FAST)</label>
+                            <label><input type="checkbox" name="red_flags" value="severe_headache"> Severe Headache</label>
+                            <label><input type="checkbox" name="red_flags" value="high_fever"> High Fever (>103°F)</label>
+                            <label><input type="checkbox" name="red_flags" value="severe_abdominal_pain"> Severe Abdominal Pain</label>
+                            <label><input type="checkbox" name="red_flags" value="confusion"> Confusion/Altered Mental State</label>
+                            <label><input type="checkbox" name="red_flags" value="suicidal_thoughts"> Suicidal Thoughts</label>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="btn-primary">
+                        Analyze Symptoms
+                    </button>
+                </form>
+            </div>
+
+            <div class="results-section" id="resultsSection" style="display: none;">
+                <h2>Triage Results</h2>
+                
+                <div id="loadingSpinner" class="loading" style="display: none;">
+                    <div class="spinner"></div>
+                    <p>Analyzing your symptoms with AI council...</p>
+                </div>
+
+                <div id="errorMessage" class="error-message" style="display: none;"></div>
+
+                <div id="resultsContent" style="display: none;">
+                    <div class="result-card urgency-card" id="urgencyCard">
+                        <h3>Urgency Level</h3>
+                        <div class="urgency-badge" id="urgencyBadge"></div>
+                        <p id="urgencyText"></p>
+                    </div>
+
+                    <div class="result-card risk-card">
+                        <h3>Risk Assessment</h3>
+                        <div class="risk-level" id="riskLevel"></div>
+                        <div class="risk-score-bar">
+                            <div class="risk-score-fill" id="riskScoreFill"></div>
+                        </div>
+                        <p><strong>Risk Score:</strong> <span id="riskScore"></span>/100</p>
+                    </div>
+
+                    <div class="result-card confidence-card">
+                        <h3>Confidence & Agreement</h3>
+                        <p><strong>Confidence:</strong> <span id="confidence"></span> (<span id="confidenceLevel"></span>)</p>
+                        <p><strong>Agent Agreement:</strong> <span id="agreement"></span></p>
+                        <p><strong>Safety Override:</strong> <span id="safetyOverride"></span></p>
+                    </div>
+
+                    <div class="result-card explanation-card">
+                        <h3>Detailed Explanation</h3>
+                        <div id="explanation"></div>
+                    </div>
+
+                    <div class="result-card key-symptoms-card" id="keySymptomsCard">
+                        <h3>Key Symptoms Identified</h3>
+                        <div id="keySymptoms"></div>
+                    </div>
+
+                    <div class="result-card ml-baseline-card" id="mlBaselineCard">
+                        <h3>ML Baseline Predictions</h3>
+                        <div id="mlBaseline"></div>
+                    </div>
+
+                    <div class="disclaimer-box">
+                        <div id="disclaimer"></div>
+                    </div>
+
+                    <button onclick="resetForm()" class="btn-secondary">New Assessment</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            <p>&copy; 2026 MediCouncil | AI-Powered Symptom Triage | Research Prototype</p>
+        </footer>
+    </div>
+
+    <script src="/static/js/app.js"></script>
+</body>
+</html>
