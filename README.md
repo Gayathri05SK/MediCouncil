@@ -30,7 +30,7 @@ The system is **not a replacement for medical professionals**. It is a decision 
 
 ### Key Features
 
-- **Multi-Agent Council**: Three LLMs (DeepSeek-R1, GPT-OSS-120B, GLM-4.5V) run in parallel, each specializing in a different clinical perspective
+- **Multi-Agent Council**: Three LLMs (Gemini,Groq models) run in parallel, each specializing in a different clinical perspective
 - **Safety-First Override**: If any agent detects an emergency condition with high confidence, it immediately overrides the consensus — critical cases are never downgraded
 - **Weighted Consensus**: Agents are weighted by role (Emergency 50%, Guideline 30%, Primary Care 20%) and their outputs are merged into a final risk score and urgency level
 - **ML Baselines**: Naive Bayes, Logistic Regression, and Random Forest classifiers run alongside the LLMs for benchmarking
