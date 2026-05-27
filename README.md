@@ -57,11 +57,11 @@ Patient Input (Symptoms, Age, Sex, Chronic Conditions)
 │ML Models│  │           LLM Council                 │
 │  NB     │  │  ┌────────────┐  ┌────────────────┐  │
 │  LR     │  │  │Emergency   │  │Primary Care    │  │
-│  RF     │  │  │DeepSeek-R1 │  │GPT-OSS-120B    │  │
+│  RF     │  │  │LLama3.3-Groq│ │Gemini-flash    │  │
 └────┬────┘  │  └────────────┘  └────────────────┘  │
      │       │       ┌────────────────┐              │
      │       │       │Guideline Agent │              │
-     │       │       │GLM-4.5V        │              │
+     │       │       │LLama3.1-Groq   │              │
      │       │       └────────────────┘              │
      │       └──────────────────┬───────────────────┘
      │                          │
@@ -86,9 +86,9 @@ Each agent runs asynchronously and independently evaluates the patient case from
 
 | Agent | Model | Role | Weight | Temperature |
 |---|---|---|---|---|
-| Emergency | DeepSeek-R1 | Detects critical/life-threatening conditions | 50% | 0.2 |
-| Primary Care | GPT-OSS-120B (via HuggingFace) | General symptom assessment | 20% | 0.4 |
-| Guideline | GLM-4.5V | Evidence-based clinical guidelines | 30% | 0.3 |
+| Emergency | LLama3.3 | Detects critical/life-threatening conditions | 50% | 0.2 |
+| Primary Care | Gemini-flash | General symptom assessment | 20% | 0.4 |
+| Guideline | LLama3.1 | Evidence-based clinical guidelines | 30% | 0.3 |
 
 Each agent returns:
 - `risk_score` (0–100)
@@ -193,12 +193,12 @@ medicouncil/
 ### Prerequisites
 
 - Python 3.9 or higher
-- API keys for DeepSeek, HuggingFace, and ZhipuAI (GLM)
+- API keys for Gemini, and Groq
 
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/Gayathri05SK/MediCouncil.git
+git clone https://github.com/MediCouncil.git
 cd MediCouncil
 ```
 
@@ -222,14 +222,10 @@ Create a `.env` file in the project root:
 
 ```env
 # LLM API Keys
-DEEPSEEK_API_KEY=your_deepseek_api_key
-DEEPSEEK_BASE_URL=https://api.deepseek.com/v1
+GROQ_API_KEY=your_api_key
+GOOGLE_API_KEY=your_api_key
 
-HF_API_KEY=your_huggingface_api_key
-GPT_OSS_BASE_URL=https://api-inference.huggingface.co
 
-GLM_API_KEY=your_zhipuai_api_key
-GLM_BASE_URL=https://open.bigmodel.cn/api/paas/v4
 
 # Consensus Weights (must sum to 1.0)
 EMERGENCY_WEIGHT=0.5
@@ -238,13 +234,22 @@ PRIMARY_WEIGHT=0.2
 
 SAFETY_OVERRIDE_THRESHOLD=0.75
 LOW_CONFIDENCE_THRESHOLD=0.6
+# Logging
+LOG_LEVEL=INFO
+LOG_DIR=logs
+LOG_FILE=medicouncil.log
 
+# Consensus Engine
+CONSENSUS_ALGORITHM=weighted
+MIN_CONFIDENCE_THRESHOLD=0.6
+MAX_DELIBERATION_ROUNDS=3
+
+DATABASE_URL=sqlite:///./medicouncil.db
 # Server
 API_HOST=0.0.0.0
 API_PORT=8000
 DEBUG=True
-LOG_LEVEL=INFO
-LOG_FILE=medicouncil.log
+
 ```
 
 ---
