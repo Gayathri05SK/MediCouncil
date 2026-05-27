@@ -338,7 +338,7 @@ Returns server health status.
 | Layer | Technology |
 |---|---|
 | Backend API | FastAPI, Uvicorn |
-| LLM Agents | DeepSeek-R1, GPT-OSS-120B (HuggingFace), GLM-4.5V (ZhipuAI) |
+| LLM Agents | Llama,Gemini |
 | ML Baselines | scikit-learn (Naive Bayes, Logistic Regression, Random Forest) |
 | Async HTTP | aiohttp |
 | Data | pandas, numpy |
